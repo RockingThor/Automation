@@ -10,7 +10,7 @@ const Settings = (props: Props) => {
         "use server";
         const response = await db.user.update({
             where: {
-                clerkId: authUser.id,
+                clerkId: "",
             },
             data: {
                 profileImage: "",
@@ -31,11 +31,11 @@ const Settings = (props: Props) => {
                         Add or update your information
                     </p>
                 </div>
-                <ProfilePicture
+                {/* <ProfilePicture
                     onDelete={removeProfileImage}
                     userImage={user?.profileImage || ""}
                     onUpload={uploadProfileImage}
-                ></ProfilePicture>
+                ></ProfilePicture> */}
                 <ProfileForm />
             </div>
         </div>
