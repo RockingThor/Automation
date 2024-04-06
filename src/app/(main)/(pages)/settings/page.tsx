@@ -27,6 +27,20 @@ const Settings = async (props: Props) => {
         return response;
     };
 
+    const updateUserInfo = async (name: string) => {
+        "use server";
+
+        const updateUser = await db.user.update({
+            where: {
+                clerkId: authUser.id,
+            },
+            data: {
+                name,
+            },
+        });
+        return updateUser;
+    };
+
     const uploadProfileImage = async (image: string) => {
         "use server";
         const id = authUser.id;
@@ -59,7 +73,10 @@ const Settings = async (props: Props) => {
                     userImage={user?.profileImage || ""}
                     onUpload={uploadProfileImage}
                 ></ProfilePicture>
-                <ProfileForm />
+                <ProfileForm
+                    user={user}
+                    onUpdate={updateUserInfo}
+                />
             </div>
         </div>
     );

@@ -1,6 +1,6 @@
 "use client";
 import { EditUserProfileSchema } from "@/lib/types";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,23 +17,41 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { Loader2 } from "lucide-react";
 
-type Props = {};
+type Props = {
+    user: any;
+    onUpdate?: any;
+};
 
-const ProfileForm = (props: Props) => {
+const ProfileForm = ({ user, onUpdate }: Props) => {
     const [isLoading, setIsLoading] = useState(false);
     const form = useForm<z.infer<typeof EditUserProfileSchema>>({
         mode: "onChange",
         resolver: zodResolver(EditUserProfileSchema),
         defaultValues: {
-            name: "",
-            email: "",
+            name: user?.name,
+            email: user?.email,
         },
     });
+    const handleSubmit = async (
+        values: z.infer<typeof EditUserProfileSchema>
+    ) => {
+        setIsLoading(true);
+        await onUpdate(values.name);
+        setIsLoading(false);
+    };
+
+    useEffect(() => {
+        form.reset({
+            name: user?.name,
+            email: user?.email,
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [user]);
     return (
         <Form {...form}>
             <form
                 className="flex flex-col gap-6"
-                onSubmit={() => {}}
+                onSubmit={form.handleSubmit(handleSubmit)}
             >
                 <FormField
                     disabled={isLoading}
@@ -46,8 +64,8 @@ const ProfileForm = (props: Props) => {
                             </FormLabel>
                             <FormControl>
                                 <Input
-                                    placeholder="Name"
                                     {...field}
+                                    placeholder="Name"
                                 />
                             </FormControl>
                             <FormMessage />
@@ -63,9 +81,9 @@ const ProfileForm = (props: Props) => {
                             <FormLabel className="text-lg">Email</FormLabel>
                             <FormControl>
                                 <Input
+                                    {...field}
                                     type="email"
                                     placeholder="rohit@rohit.com"
-                                    {...field}
                                 />
                             </FormControl>
                             <FormMessage />
