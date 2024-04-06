@@ -7,7 +7,7 @@ export async function POST(req: Request) {
         const { id, email_addresses, first_name, image_url } = body?.data;
         const email = email_addresses[0]?.email_address;
 
-        console.log("It worked..... 😃", body);
+        //console.log("It worked..... 😃", body);
 
         await db.user.upsert({
             where: {

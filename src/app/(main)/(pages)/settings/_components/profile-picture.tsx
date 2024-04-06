@@ -1,3 +1,4 @@
+"use client";
 import { useRouter } from "next/navigation";
 import React from "react";
 import UploadCareButton from "./upload-care-button";
@@ -6,9 +7,9 @@ import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 
 type Props = {
-    userImage: string;
+    userImage: string | null;
     onUpload: any;
-    onDelete: any;
+    onDelete?: any;
 };
 
 const ProfilePicture = ({ userImage, onUpload, onDelete }: Props) => {
@@ -39,7 +40,7 @@ const ProfilePicture = ({ userImage, onUpload, onDelete }: Props) => {
                         </Button>
                     </>
                 ) : (
-                    <UploadCareButton />
+                    <UploadCareButton onUpload={onUpload} />
                 )}
             </div>
         </div>
