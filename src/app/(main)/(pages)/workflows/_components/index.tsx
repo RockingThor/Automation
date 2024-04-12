@@ -1,12 +1,12 @@
 import React from "react";
-import { WorkflowCard } from "./workflow";
+import { WorkflowCard } from "./workflow-card";
 
 type Props = {};
 
 const WorkFlow = (props: Props) => {
     return (
-        <div className="flex flex-col gap-4 p-6">
-            <section className="flex flex-col gap-4 p-6">
+        <div className="relative flex flex-col gap-4 ">
+            <section className="flex flex-col m-2">
                 <WorkflowCard
                     description="Creating a test workflow"
                     id="575858"
