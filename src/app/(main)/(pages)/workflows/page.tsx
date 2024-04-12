@@ -1,6 +1,7 @@
 import React from "react";
 import WorkflowButton from "./_components/workflow-button";
 import { useModal } from "@/providers/modal-provider";
+import WorkFlow from "./_components";
 
 type Props = {};
 
@@ -12,6 +13,7 @@ const Workflows = (props: Props) => {
                 Workflows
                 <WorkflowButton />
             </h1>
+            <WorkFlow />
         </div>
     );
 };

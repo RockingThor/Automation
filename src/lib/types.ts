@@ -6,6 +6,11 @@ export const EditUserProfileSchema = z.object({
     name: z.string().min(1, "Required"),
 });
 
+export const WorkFlowFormSchema = z.object({
+    name: z.string().min(1, "Required"),
+    description: z.string().min(1, "Required"),
+});
+
 export type ConnectionsType = "Google Drive" | "Discord" | "Slack" | "Notion";
 
 export type Connection = {
