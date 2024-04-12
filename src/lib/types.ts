@@ -35,7 +35,8 @@ export type EditorCanvasType =
     | "Google Calender"
     | "Trigger"
     | "Action"
-    | "Wait";
+    | "Wait"
+    | "Google Calendar";
 
 export type EditorCanvasCardType = {
     title: string;
