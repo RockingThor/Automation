@@ -119,11 +119,11 @@ export const ConnectionProvider = ({ children }: ConnectionWithChildProps) => {
 };
 
 export const useNodeConnections = () => {
-    const context = useContext(ConnectionContext);
-    if (!context) {
+    const nodeConnection = useContext(ConnectionContext);
+    if (!nodeConnection) {
         throw new Error(
             "useNodeConnections must be used within a ConnectionProvider"
         );
     }
-    return context;
+    return { nodeConnection };
 };
