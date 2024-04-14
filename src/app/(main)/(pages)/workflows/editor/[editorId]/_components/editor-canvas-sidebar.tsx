@@ -9,7 +9,7 @@ import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { EditorCanvasType, EditorNodeType } from "@/lib/types";
 import { useEditor } from "@/providers/editor-provider";
-import React from "react";
+import React, { useEffect } from "react";
 import EditorCanvasIconHelper from "./editor-canvas-icon-helper";
 import { CONNECTIONS, EditorCanvasDefaultCardTypes } from "@/lib/constants";
 import { onDragStart } from "@/lib/editor-utils";
@@ -20,6 +20,9 @@ import {
     AccordionTrigger,
 } from "@/components/ui/accordion";
 import RenderConnectionAccoridon from "./render-connections-accordion";
+import RenderOutputAccordion from "./render-output-accordion";
+import { useNodeConnections } from "@/providers/connections-provider";
+import { useZeroStore } from "@/store";
 
 type Props = {
     nodes: EditorNodeType[];
@@ -27,6 +30,22 @@ type Props = {
 
 const EditorCanvasSidebar = ({ nodes }: Props) => {
     const { state } = useEditor();
+    const { nodeConnection } = useNodeConnections();
+    const { googleFile, setSlackChannels } = useZeroStore();
+    //   useEffect(() => {
+    //     if (state) {
+    //       onConnections(nodeConnection, state, googleFile)
+    //     }
+    //   }, [state])
+
+    //   useEffect(() => {
+    //     if (nodeConnection.slackNode.slackAccessToken) {
+    //       fetchBotSlackChannels(
+    //         nodeConnection.slackNode.slackAccessToken,
+    //         setSlackChannels
+    //       )
+    //     }
+    //   }, [nodeConnection])
     return (
         <aside>
             <Tabs
@@ -99,6 +118,18 @@ const EditorCanvasSidebar = ({ nodes }: Props) => {
                                     />
                                 ))}
                             </AccordionContent>
+                        </AccordionItem>
+                        <AccordionItem
+                            value="Expected Output"
+                            className="px-2"
+                        >
+                            <AccordionTrigger className="!no-underline">
+                                Action
+                            </AccordionTrigger>
+                            <RenderOutputAccordion
+                                state={state}
+                                nodeConnection={nodeConnection}
+                            />
                         </AccordionItem>
                     </Accordion>
                 </TabsContent>
