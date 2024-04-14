@@ -55,6 +55,7 @@ const FlowInstance = ({ children, edges, nodes }: Props) => {
                     Publish
                 </Button>
             </div>
+            {children}
         </div>
     );
 };
