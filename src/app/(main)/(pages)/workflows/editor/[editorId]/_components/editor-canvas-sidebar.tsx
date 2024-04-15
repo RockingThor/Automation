@@ -12,7 +12,7 @@ import { useEditor } from "@/providers/editor-provider";
 import React, { useEffect } from "react";
 import EditorCanvasIconHelper from "./editor-canvas-icon-helper";
 import { CONNECTIONS, EditorCanvasDefaultCardTypes } from "@/lib/constants";
-import { onDragStart } from "@/lib/editor-utils";
+import { onConnections, onDragStart } from "@/lib/editor-utils";
 import {
     Accordion,
     AccordionContent,
@@ -32,11 +32,13 @@ const EditorCanvasSidebar = ({ nodes }: Props) => {
     const { state } = useEditor();
     const { nodeConnection } = useNodeConnections();
     const { googleFile, setSlackChannels } = useZeroStore();
-    //   useEffect(() => {
-    //     if (state) {
-    //       onConnections(nodeConnection, state, googleFile)
-    //     }
-    //   }, [state])
+
+    useEffect(() => {
+        if (state) {
+            onConnections(nodeConnection, state, googleFile);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [state]);
 
     //   useEffect(() => {
     //     if (nodeConnection.slackNode.slackAccessToken) {

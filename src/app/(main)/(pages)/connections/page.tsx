@@ -1,11 +1,11 @@
 import { CONNECTIONS } from "@/lib/constants";
 import React from "react";
 import ConnectionCard from "./_components/connection-card";
-import { title } from "process";
 import { currentUser } from "@clerk/nextjs";
 import { onDiscordConnect } from "./_actions/discord-connection";
 import { onNotionConnect } from "./_actions/notion-connection";
 import { onSlackConnect } from "./_actions/slack-connection";
+import { getUserData } from "./_actions/get-user";
 
 type Props = {
     searchParams?: {
@@ -58,7 +58,7 @@ const Connections = async (props: Props) => {
     if (!user) return null;
 
     const onUserConnections = async () => {
-        console.log(database_id);
+        // console.log(database_id);
         await onDiscordConnect(
             channel_id!,
             webhook_id!,
@@ -87,32 +87,46 @@ const Connections = async (props: Props) => {
             team_name!,
             user.id
         );
-        return (
-            <div className="relative flex flex-col gap-4">
-                <h1 className="sticky top-0 z-[10] flex items-center justify-between border-b bg-background/50 p-6 text-4xl backdrop-blur-lg">
-                    Connections
-                </h1>
-                <div className="relative flex flex-col gap-4">
-                    <section className="flex flex-col gap-4 p-6 text-muted-foreground">
-                        Connect all your apps from here. You may need to connect
-                        or configure permissions regaularly to have a smooth
-                        experience while using the services.
-                        {CONNECTIONS.map((connection) => (
-                            <ConnectionCard
-                                key={connection.title}
-                                title={connection.title}
-                                description={connection.description}
-                                icon={connection.image}
-                                type={connection.title}
-                                //TODO : Add callback & connected
-                                connected={true}
-                            />
-                        ))}
-                    </section>
-                </div>
-            </div>
-        );
+        const connections: any = {};
+        const user_info = await getUserData(user.id);
+
+        //As using Clerk as an auth provider, I have already asked for appropiate google drive permisions from the user. Fir this reason all the drive connection always will be true.
+        //TODO: Check all the google drive permissions while changing auth from clerk to nextauth.js
+        user_info?.connections.map((connection) => {
+            connections[connection.type] = true;
+            return (connections[connection.type] = true);
+        });
+
+        return { ...connections, "Google Drive": true };
     };
+
+    const connections = await onUserConnections();
+
+    return (
+        <div className="relative flex flex-col gap-4">
+            <h1 className="sticky top-0 z-[10] flex items-center justify-between border-b bg-background/50 p-6 text-4xl backdrop-blur-lg">
+                Connections
+            </h1>
+            <div className="relative flex flex-col gap-4">
+                <section className="flex flex-col gap-4 p-6 text-muted-foreground">
+                    Connect all your apps from here. You may need to connect or
+                    configure permissions regaularly to have a smooth experience
+                    while using the services.
+                    {CONNECTIONS.map((connection) => (
+                        <ConnectionCard
+                            key={connection.title}
+                            title={connection.title}
+                            description={connection.description}
+                            icon={connection.image}
+                            type={connection.title}
+                            //TODO : Add callback & connected
+                            connected={connections}
+                        />
+                    ))}
+                </section>
+            </div>
+        </div>
+    );
 };
 
 export default Connections;
