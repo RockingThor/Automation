@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { onContentChange } from "@/lib/editor-utils";
 import GoogleFileDetails from "./google-file-details";
 import GoogleDriveFiles from "./google-drive-files";
+import ActionButton from "./action-button";
 
 type Props = {
     nodeConnection: ConnectionProviderProps;
@@ -100,21 +101,14 @@ const ContentBasedOnTitle = ({
                                     </div>
                                 </CardContent>
                             </Card>
-                        )}
-                    {/* {title === "Google Drive" && <GoogleDriveFiles />}
+                        )}{" "}
+                    {title === "Google Drive" && <GoogleDriveFiles />}
                     <ActionButton
                         currentService={title}
                         nodeConnection={nodeConnection}
                         channels={selectedSlackChannels}
                         setChannels={setSelectedSlackChannels}
-                    /> */}
-                    {title === "Google Drive" && (
-                        <GoogleDriveFiles
-                            nodeConnection={nodeConnection}
-                            googleFile={file}
-                            setGoogleFile={setFile}
-                        />
-                    )}
+                    />
                 </div>
             </Card>
         </AccordionContent>

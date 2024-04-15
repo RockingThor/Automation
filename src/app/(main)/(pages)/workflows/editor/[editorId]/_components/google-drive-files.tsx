@@ -8,17 +8,9 @@ import { Card, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CardContainer } from "@/components/global/3d-card";
 
-type Props = {
-    nodeConnection: ConnectionProviderProps;
-    googleFile: any;
-    setGoogleFile: (file: any) => void;
-};
+type Props = {};
 
-const GoogleDriveFiles = ({
-    nodeConnection,
-    googleFile,
-    setGoogleFile,
-}: Props) => {
+const GoogleDriveFiles = () => {
     const [loading, setLoading] = useState(false);
     const [isListening, setIsListening] = useState(false);
 
@@ -30,6 +22,7 @@ const GoogleDriveFiles = ({
             setLoading(false);
             setIsListening(true);
         }
+        setIsListening(false);
     };
 
     const onListener = async () => {

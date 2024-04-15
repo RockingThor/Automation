@@ -2,6 +2,7 @@ import { CONNECTIONS } from "@/lib/constants";
 import React from "react";
 import ConnectionCard from "./_components/connection-card";
 import { title } from "process";
+import { currentUser } from "@clerk/nextjs";
 
 type Props = {
     searchParams?: {
@@ -9,7 +10,49 @@ type Props = {
     };
 };
 
-const Connections = (props: Props) => {
+const Connections = async (props: Props) => {
+    const {
+        webhook_id,
+        webhook_name,
+        webhook_url,
+        guild_id,
+        guild_name,
+        channel_id,
+        access_token,
+        workspace_name,
+        workspace_icon,
+        workspace_id,
+        database_id,
+        app_id,
+        authed_user_id,
+        authed_user_token,
+        slack_access_token,
+        bot_user_id,
+        team_id,
+        team_name,
+    } = props.searchParams ?? {
+        webhook_id: "",
+        webhook_name: "",
+        webhook_url: "",
+        guild_id: "",
+        guild_name: "",
+        channel_id: "",
+        access_token: "",
+        workspace_name: "",
+        workspace_icon: "",
+        workspace_id: "",
+        database_id: "",
+        app_id: "",
+        authed_user_id: "",
+        authed_user_token: "",
+        slack_access_token: "",
+        bot_user_id: "",
+        team_id: "",
+        team_name: "",
+    };
+
+    const user = await currentUser();
+    if (!user) return null;
     return (
         <div className="relative flex flex-col gap-4">
             <h1 className="sticky top-0 z-[10] flex items-center justify-between border-b bg-background/50 p-6 text-4xl backdrop-blur-lg">
