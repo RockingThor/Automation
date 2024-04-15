@@ -3,6 +3,9 @@ import React from "react";
 import ConnectionCard from "./_components/connection-card";
 import { title } from "process";
 import { currentUser } from "@clerk/nextjs";
+import { onDiscordConnect } from "./_actions/discord-connection";
+import { onNotionConnect } from "./_actions/notion-connection";
+import { onSlackConnect } from "./_actions/slack-connection";
 
 type Props = {
     searchParams?: {
@@ -53,31 +56,63 @@ const Connections = async (props: Props) => {
 
     const user = await currentUser();
     if (!user) return null;
-    return (
-        <div className="relative flex flex-col gap-4">
-            <h1 className="sticky top-0 z-[10] flex items-center justify-between border-b bg-background/50 p-6 text-4xl backdrop-blur-lg">
-                Connections
-            </h1>
+
+    const onUserConnections = async () => {
+        console.log(database_id);
+        await onDiscordConnect(
+            channel_id!,
+            webhook_id!,
+            webhook_name!,
+            webhook_url!,
+            user.id,
+            guild_name!,
+            guild_id!
+        );
+        await onNotionConnect(
+            access_token!,
+            workspace_id!,
+            workspace_icon!,
+            workspace_name!,
+            database_id!,
+            user.id
+        );
+
+        await onSlackConnect(
+            app_id!,
+            authed_user_id!,
+            authed_user_token!,
+            slack_access_token!,
+            bot_user_id!,
+            team_id!,
+            team_name!,
+            user.id
+        );
+        return (
             <div className="relative flex flex-col gap-4">
-                <section className="flex flex-col gap-4 p-6 text-muted-foreground">
-                    Connect all your apps from here. You may need to connect or
-                    configure permissions regaularly to have a smooth experience
-                    while using the services.
-                    {CONNECTIONS.map((connection) => (
-                        <ConnectionCard
-                            key={connection.title}
-                            title={connection.title}
-                            description={connection.description}
-                            icon={connection.image}
-                            type={connection.title}
-                            //TODO : Add callback & connected
-                            connected={true}
-                        />
-                    ))}
-                </section>
+                <h1 className="sticky top-0 z-[10] flex items-center justify-between border-b bg-background/50 p-6 text-4xl backdrop-blur-lg">
+                    Connections
+                </h1>
+                <div className="relative flex flex-col gap-4">
+                    <section className="flex flex-col gap-4 p-6 text-muted-foreground">
+                        Connect all your apps from here. You may need to connect
+                        or configure permissions regaularly to have a smooth
+                        experience while using the services.
+                        {CONNECTIONS.map((connection) => (
+                            <ConnectionCard
+                                key={connection.title}
+                                title={connection.title}
+                                description={connection.description}
+                                icon={connection.image}
+                                type={connection.title}
+                                //TODO : Add callback & connected
+                                connected={true}
+                            />
+                        ))}
+                    </section>
+                </div>
             </div>
-        </div>
-    );
+        );
+    };
 };
 
 export default Connections;
