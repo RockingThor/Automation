@@ -1,5 +1,6 @@
 import { ConnectionProviderProps } from "@/providers/connections-provider";
 import { EditorCanvasCardType } from "./types";
+import { Content } from "next/font/google";
 
 export const onDragStart = (
     event: any,
@@ -37,5 +38,37 @@ export const onContentChange = (
         onSlackContent(nodeConnection, event);
     } else if (nodeType === "Discord") {
         onDiscordContent(nodeConnection, event);
+    }
+};
+
+export const onAddTemplateSlack = (
+    nodeConnection: ConnectionProviderProps,
+    template: string
+) => {
+    nodeConnection.setSlackNode((prev: any) => ({
+        ...prev,
+        Content: `${prev.content} ${template}`,
+    }));
+};
+
+export const onAddTemplateDiscord = (
+    nodeConnection: ConnectionProviderProps,
+    template: string
+) => {
+    nodeConnection.setDiscordNode((prev: any) => ({
+        ...prev,
+        Content: `${prev.content} ${template}`,
+    }));
+};
+
+export const onAddTemplate = (
+    nodeConnection: ConnectionProviderProps,
+    title: string,
+    template: string
+) => {
+    if (title === "Slack") {
+        onAddTemplateSlack(nodeConnection, template);
+    } else if (title === "Discord") {
+        onAddTemplateDiscord(nodeConnection, template);
     }
 };

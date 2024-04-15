@@ -6,12 +6,15 @@ import { nodeMapper } from "@/lib/types";
 import { AccordionContent } from "@radix-ui/react-accordion";
 import {
     Card,
+    CardContent,
     CardDescription,
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { onContentChange } from "@/lib/editor-utils";
+import GoogleFileDetails from "./google-file-details";
+import GoogleDriveFiles from "./google-drive-files";
 
 type Props = {
     nodeConnection: ConnectionProviderProps;
@@ -70,7 +73,7 @@ const ContentBasedOnTitle = ({
                         {title === "Notion" ? "Values to be stored" : "Message"}
                     </p>
                     {title === "Discord" ||
-                        (title === "Slack" && (
+                        (title === "Slack" ? (
                             <Input
                                 type="text"
                                 value={nodeConnectionType.content}
@@ -78,7 +81,40 @@ const ContentBasedOnTitle = ({
                                     onContentChange(nodeConnection, title, e);
                                 }}
                             />
-                        ))}
+                        ) : null)}
+                    {JSON.stringify(file) !== "{}" &&
+                        title !== "Google Drive" && (
+                            <Card className="w-full">
+                                <CardContent className="px-2 py-3">
+                                    <div className="flex flex-col gap-4">
+                                        <CardDescription>
+                                            Drive File
+                                        </CardDescription>
+                                        <div className="flex flex-wrap gap-2">
+                                            <GoogleFileDetails
+                                                nodeConnection={nodeConnection}
+                                                title={title}
+                                                gFile={file}
+                                            />
+                                        </div>
+                                    </div>
+                                </CardContent>
+                            </Card>
+                        )}
+                    {/* {title === "Google Drive" && <GoogleDriveFiles />}
+                    <ActionButton
+                        currentService={title}
+                        nodeConnection={nodeConnection}
+                        channels={selectedSlackChannels}
+                        setChannels={setSelectedSlackChannels}
+                    /> */}
+                    {title === "Google Drive" && (
+                        <GoogleDriveFiles
+                            nodeConnection={nodeConnection}
+                            googleFile={file}
+                            setGoogleFile={setFile}
+                        />
+                    )}
                 </div>
             </Card>
         </AccordionContent>
